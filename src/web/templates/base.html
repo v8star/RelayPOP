@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}RelayPOP{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">RelayPOP</div>
+
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/accounts">POP</a>
+        <a href="/smtp">SMTP</a>
+        <a href="/settings">Settings</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+</header>
+
+<div class="container">
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<div class="flash-container">
+
+    {% for message in messages %}
+    <div class="flash-message">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+</div>
+
+</body>
+</html>

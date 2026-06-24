@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>RelayPOP Login</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+<body style="display:flex;align-items:center;justify-content:center;height:100vh;background:#f4f6f8;">
+
+<div class="box" style="width:320px;text-align:center;">
+
+<h2>RelayPOP</h2>
+
+<p style="color:#888;margin-top:-10px;">POP3 Connector</p>
+
+{% if error %}
+
+    <p style="color:#c0392b;">
+        {{ error }}
+    </p>
+
+{% endif %}
+
+<form method="POST">
+
+    <p>
+
+        <input
+            name="username"
+            placeholder="Username"
+            style="width:100%;box-sizing;"
+        >
+
+    </p>
+
+    <p>
+
+        <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            style="width:100%;box-sizing;"
+        >
+
+    </p>
+
+    <p>
+
+        <button
+            type="submit"
+            class="button"
+            style="width:100%;border:none;cursor:pointer;">
+
+            Login
+
+        </button>
+
+    </p>
+
+</form>
+
+</div>
+
+</body>
+
+</html>

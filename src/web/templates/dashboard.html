@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+RelayPOP Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+
+<h2>Accounts</h2>
+
+<table>
+
+    <tr>
+        <th>Status</th>
+        <th>Account</th>
+        <th>Poll</th>
+        <th>Retention</th>
+        <th>POP3</th>
+        <th>Action</th>
+    </tr>
+
+    {% for a in accounts %}
+
+    <tr>
+
+        <td>
+            {% set s = status.get(a.name, 'gray') %}
+            <span class="status-dot {{ s }}"></span>
+        </td>
+
+        <td><b>{{ a.name }}</b></td>
+
+        <td>{{ a.poll_interval }} min</td>
+
+        <td>{{ a.retention_days }} days</td>
+
+        <td>{{ a.pop3.host }}</td>
+
+        <td>
+            <a class="button" href="/poll/{{ a.name }}">
+                Poll now
+            </a>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="box">
+
+<h2>Latest Events</h2>
+
+<table>
+
+    <tr>
+        <th>Time</th>
+        <th>Account</th>
+        <th>Level</th>
+        <th>Component</th>
+        <th>Message</th>
+    </tr>
+
+    {% for e in events %}
+
+    <tr class="
+        {% if e.component == 'DELIVERY' %}
+            delivery
+        {% elif e.component == 'RETENTION' %}
+            retention
+        {% elif e.level == 'ERROR' %}
+            error
+        {% elif e.level == 'WARNING' %}
+            warning
+        {% elif e.component == 'POP3' %}
+            pop3
+        {% elif e.component == 'SMTP' %}
+            smtp
+        {% endif %}
+    ">
+
+        <td>{{ e.event_time[:19].replace('T',' ') }}</td>
+        <td>{{ e.account }}</td>
+        <td>{{ e.level }}</td>
+        <td>{{ e.component }}</td>
+        <td>{{ e.message }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+<script>
+setTimeout(function(){
+    location.reload();
+}, 10000);
+</script>
+
+{% endblock %}

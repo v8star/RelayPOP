@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if account %}
+Edit Account
+{% else %}
+New Account
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+
+    <h2>
+
+        {% if account %}
+        Edit Account
+        {% else %}
+        New Account
+        {% endif %}
+
+    </h2>
+
+    <a class="button" href="/accounts">
+
+        Back
+
+    </a>
+
+</div>
+
+</div>
+
+<form method="POST">
+
+{% if account %}
+<input
+    type="hidden"
+    name="original_name"
+    value="{{ account.name }}">
+{% endif %}
+
+<div class="box">
+
+<h3>General</h3>
+
+<p>
+
+    <label><b>Name</b></label><br>
+
+    {% if account %}
+
+<input
+    type="text"
+    value="{{ account.name }}"
+    readonly
+    style="width:400px;padding:8px;background:#f3f3f3;">
+
+<input
+    type="hidden"
+    name="name"
+    value="{{ account.name }}">
+
+{% else %}
+
+<input
+    type="text"
+    name="name"
+    value=""
+    style="width:400px;padding:8px;">
+
+{% endif %}
+
+</p>
+
+</div>
+
+<div class="box">
+
+<h3>POP3</h3>
+
+<p>
+
+    <label>Host</label><br>
+
+    <input
+        type="text"
+        name="pop3_host"
+        value="{{ account.pop3.host if account else '' }}"
+        style="width:400px;padding:8px;">
+
+</p>
+
+<p>
+
+    <label>Port</label><br>
+
+    <input
+        type="number"
+        name="pop3_port"
+        value="{{ account.pop3.port if account else 995 }}"
+        style="width:120px;padding:8px;">
+
+</p>
+
+<p>
+
+    <label>User</label><br>
+
+    <input
+        type="text"
+        name="pop3_user"
+        value="{{ account.pop3.username if account else '' }}"
+        style="width:400px;padding:8px;">
+
+</p>
+
+<p>
+
+    <label>Password</label><br>
+
+    <input
+        type="password"
+        name="pop3_pass"
+        placeholder="leave empty to keep current"
+        style="width:400px;padding:8px;">
+
+</p>
+
+</div>
+
+<div class="box">
+
+<h3>SMTP Profile</h3>
+
+<p>
+
+    <label>SMTP Configuration</label><br>
+
+    <select name="smtp_profile" style="width:400px;padding:8px;">
+
+       {% for p in smtp_profiles %}
+
+            <option value="{{ p.name }}"
+                {% if account and account.smtp_profile == p.name %}
+                    selected
+                {% endif %}
+            >
+                {{ p.name }} ({{ p.host }}:{{ p.port }})
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+</p>
+
+</div>
+
+<p>
+
+
+<div class="box">
+
+<h3>Scheduler</h3>
+
+<p>
+
+    <label>Poll interval (minutes)</label><br>
+
+    <input
+        type="number"
+        name="poll_interval"
+        min="1"
+        max="60"
+        step="1"
+        value="{{ account.poll_interval if account else 1 }}"
+        style="width:100px;padding:8px;">
+
+</p>
+
+</div>
+
+<div class="box">
+
+<h3>Retention</h3>
+
+<p>
+
+    <label>Retention days</label><br>
+
+    <input
+        type="number"
+        name="retention_days"
+        min="0"
+        max="365"
+        step="1"
+        value="{{ account.retention_days if account else 7 }}"
+        style="width:100px;padding:8px;">
+
+</p>
+
+</div>
+
+<div class="box">
+
+<h3>Control</h3>
+
+<label>
+    <input type="checkbox" name="enabled"
+        {% if account and account.get("enabled", True) %}
+            checked
+        {% endif %}
+    >
+    Enabled (active account)
+</label>
+
+</div>
+
+<div class="box" style="display:flex;justify-content:flex-end;gap:10px;">
+
+<a
+    class="button"
+    href="/accounts"
+    style="background:#888;">
+
+    Cancel
+
+</a>
+
+<button
+    type="submit"
+    class="button"
+    style="border:none;cursor:pointer;">
+
+    Save
+
+</button>
+
+</div>
+
+</form>
+
+{% endblock %}

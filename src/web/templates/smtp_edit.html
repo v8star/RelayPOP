@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}
+SMTP Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+
+<h2>
+
+    {% if profile %}
+    Edit SMTP Profile
+    {% else %}
+    New SMTP Profile
+    {% endif %}
+
+</h2>
+
+<a
+    class="button"
+    href="/settings">
+
+    Back
+
+</a>
+
+</div>
+
+</div>
+
+<form method="POST">
+
+<div class="box">
+
+<h3>General</h3>
+
+<p>
+
+<label>Name</label><br>
+
+{% if profile %}
+
+<input
+    type="text"
+    name="name"
+    value="{{ profile.name }}"
+    readonly
+    style="width:400px;padding:8px;background:#eee;">
+
+{% else %}
+
+<input
+    type="text"
+    name="name"
+    value=""
+    style="width:400px;padding:8px;">
+
+{% endif %}
+
+</p>
+
+<p>
+
+<label>Description</label><br>
+
+<input
+    type="text"
+    name="description"
+    value="{{ profile.description if profile else '' }}"
+    style="width:500px;padding:8px;">
+
+</p>
+
+</div>
+
+<div class="box">
+
+<h3>SMTP Server</h3>
+
+<p>
+
+<label>Host</label><br>
+
+<input
+    type="text"
+    name="host"
+    value="{{ profile.host if profile else '' }}"
+    style="width:400px;padding:8px;">
+
+</p>
+
+<p>
+
+<label>Port</label><br>
+
+<input
+    type="number"
+    name="port"
+    value="{{ profile.port if profile else 25 }}"
+    style="width:120px;padding:8px;">
+
+</p>
+
+<p>
+
+<label>Security</label><br>
+
+<select
+    name="security"
+    style="padding:8px;">
+
+    <option value="none"
+        {% if profile and profile.security == 'none' %}selected{% endif %}>
+        None
+    </option>
+
+    <option value="ssl"
+        {% if profile and profile.security == 'ssl' %}selected{% endif %}>
+        SSL/TLS
+    </option>
+
+    <option value="starttls"
+        {% if profile and profile.security == 'starttls' %}selected{% endif %}>
+        STARTTLS
+    </option>
+
+</select>
+
+</p>
+
+</div>
+
+<div class="box">
+
+<h3>Authentication</h3>
+
+<p>
+
+<label>Username</label><br>
+
+<input
+    type="text"
+    name="username"
+    value="{{ profile.username if profile else '' }}"
+    style="width:400px;padding:8px;">
+
+</p>
+
+<p>
+
+<label>Password</label><br>
+
+<input
+    type="password"
+    name="password"
+    placeholder="Leave blank to keep current password"
+    style="width:400px;padding:8px;">
+
+</p>
+
+</div>
+
+<div class="box" style="display:flex;justify-content:flex-end;gap:10px;">
+
+<a
+ class="button"
+ href="/settings"
+ style="background:#888;">
+
+Cancel
+
+</a>
+
+<button
+ type="submit"
+ class="button"
+ style="border:none;cursor:pointer;">
+
+Save
+
+</button>
+
+</div>
+
+</form>
+
+{% endblock %}

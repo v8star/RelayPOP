@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}
+RelayPOP - Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+
+<h2>SMTP Profiles</h2>
+
+<a class="button" href="/smtp/new">
+
+    + New SMTP Profile
+
+</a>
+
+</div>
+
+</div>
+
+<div class="box">
+
+<table>
+
+<tr>
+
+    <th>Name</th>
+
+    <th>Description</th>
+
+    <th>Host</th>
+
+    <th>Port</th>
+
+    <th>Security</th>
+
+    <th>Actions</th>
+
+</tr>
+
+{% for p in profiles %}
+
+<tr>
+
+    <td>
+        <b>{{ p.name }}</b>
+    </td>
+
+    <td>
+        {{ p.description }}
+    </td>
+
+    <td>
+        {{ p.host }}
+    </td>
+
+    <td>
+        {{ p.port }}
+    </td>
+
+    <td>
+        {{ p.security }}
+    </td>
+
+    <td class="actions">
+
+        <a class="button" href="/smtp/edit/{{ p.name }}">Edit</a>
+
+        <a class="button" href="/smtp/delete/{{ p.name }}" style="background:#d9534f;" onclick="return confirm('Delete SMTP profile {{ p.name }} ?');"> Delete </a>
+
+        <a class="button" href="/smtp/test/{{ p.name }}">Test</a>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

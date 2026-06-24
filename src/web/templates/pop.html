@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}
+RelayPOP - Accounts
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+
+<div style="display:flex;justify-content:space-between;align-items:center;">
+
+    <h2>Accounts</h2>
+
+    <a class="button" href="/account/new">
+
+        + New Account
+
+    </a>
+
+</div>
+
+</div>
+
+<div class="box">
+
+<table>
+
+    <tr>
+
+        <th>Status</th>
+
+        <th>Name</th>
+
+        <th>POP3 Host</th>
+
+        <th>SMTP Host</th>
+
+        <th>Poll</th>
+
+        <th>Retention</th>
+
+        <th>Actions</th>
+
+    </tr>
+
+    {% for a in accounts %}
+
+    <tr>
+
+        <td>
+
+        {% set s = status.get(a.name, 'gray') %}
+
+        <span class="status-dot {{ s }}"></span>
+
+        {% if s == 'green' %}
+
+        {% elif s == 'red' %}
+
+        {% else %}
+
+        {% endif %}
+
+        </td>
+
+        <td>
+
+            <b>{{ a.name }}</b>
+
+        </td>
+
+        <td>
+
+            {{ a.pop3.host }}
+
+        </td>
+
+        <td>
+
+        {% if a.smtp_profile %}
+            {{ a.smtp_profile }}
+        {% else %}
+            legacy
+        {% endif %}
+
+        </td>
+
+        <td>
+
+            {{ a.poll_interval }} min
+
+        </td>
+
+        <td>
+
+            {{ a.retention_days }} days
+
+        </td>
+
+<td>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="button" href="/account/edit/{{ a.name }}">Edit</a>
+        <a class="button" href="/poll/{{ a.name }}">Poll</a>
+        <a class="button" href="/account/delete/{{ a.name }}"
+           onclick="return confirm('Delete account {{ a.name }} ?');"
+           style="background:#d9534f;">
+            Delete
+        </a>
+    </div>
+</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

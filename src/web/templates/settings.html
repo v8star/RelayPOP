@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+<h2>System Settings</h2>
+
+<!-- ===================================================== -->
+<!-- SYSTEM SETTINGS -->
+<!-- ===================================================== -->
+<div class="box">
+
+    <h3>System</h3>
+
+    <form method="POST" action="/settings/general">
+
+        <p>
+            <label>Dashboard events limit</label><br>
+            <input type="number"
+                   name="dashboard_events_limit"
+                   value="{{ settings.get('dashboard_events_limit', 50) }}"
+                   min="10"
+                   max="500"
+                   style="width:120px;padding:8px;">
+        </p>
+
+        <p>
+            <label>UI refresh (seconds)</label><br>
+            <input type="number"
+                   name="ui_refresh"
+                   value="{{ settings.get('ui_refresh', 10) }}"
+                   style="width:120px;padding:8px;">
+        </p>
+
+        <p>
+            <label>Default poll interval (minutes)</label><br>
+            <input type="number"
+                   name="default_poll_interval"
+                   value="{{ settings.get('default_poll_interval', 1) }}"
+                   style="width:120px;padding:8px;">
+        </p>
+
+        <div style="margin-top:10px;">
+            <button class="button" type="submit">Save system settings</button>
+        </div>
+
+    </form>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- SECURITY -->
+<!-- ===================================================== -->
+<div class="box">
+
+    <h3>Security</h3>
+
+    <form method="POST" action="/settings/password">
+
+        <p>
+            <label>Current password</label><br>
+            <input type="password" name="current_password" style="width:300px;padding:8px;">
+        </p>
+
+        <p>
+            <label>New password</label><br>
+            <input type="password" name="new_password" style="width:300px;padding:8px;">
+        </p>
+
+        <p>
+            <label>Confirm password</label><br>
+            <input type="password" name="confirm_password" style="width:300px;padding:8px;">
+        </p>
+
+        <div style="margin-top:10px;">
+            <button class="button" type="submit">Update password</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
