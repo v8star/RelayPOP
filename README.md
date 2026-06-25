@@ -69,6 +69,10 @@ http://your-server:8080
 
 Configure your POP3 accounts and SMTP profiles from the web interface.
 
+The default credentials for the first login are: admin / popre1ay
+
+You can change after in the settings menù.
+
 ## Notes
 
 RelayPOP is designed primarily for home labs, legacy POP3 environments, and small mail-forwarding scenarios where messages must be collected from POP3 mailboxes and delivered to another SMTP infrastructure.
