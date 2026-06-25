@@ -1,0 +1,7 @@
+name: Exchange
+description: test server
+host: exchange.intranet.local
+port: '25'
+security: none
+username: ''
+password: ''

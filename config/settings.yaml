@@ -1,0 +1,9 @@
+timezone: Europe/Rome
+session_timeout: 30
+ui_refresh: 30
+auth:
+  enabled: true
+  remember: false
+dashboard_events_limit: 10
+default_poll_interval: 1
+admin_password_hash: a0ea90436dd46aefa17ec47a9ce6b9815fa8e7dafb2ad8f9f61a667530fb4595

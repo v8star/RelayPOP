@@ -1,0 +1,10 @@
+name: test
+poll_interval: 1
+retention_days: 7
+enabled: true
+smtp_profile: Exchange
+pop3:
+  host: pop3s.provider.net
+  port: 995
+  username: test@poprelay.net
+  password: userpwd
