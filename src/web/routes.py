@@ -77,11 +77,10 @@ def login():
 
     if request.method == "POST":
 
-        username = request.form.get("username")
         password = request.form.get("password")
 
-        if authenticate(username, password):
-            login_user(username)
+        if authenticate(password):
+            login_user()
             return redirect(url_for("dashboard"))
 
         return render_template("login.html", error="Invalid credentials")
