@@ -3,6 +3,7 @@ import smtplib
 from email import policy
 from email.parser import BytesParser
 from email.message import EmailMessage
+from email.utils import parseaddr
 
 
 def _connect(profile):
@@ -54,7 +55,7 @@ def _connect(profile):
 # DELIVERY
 # =========================================================
 
-def deliver(raw, profile):
+def deliver(raw, profile, account):
 
     msg = BytesParser(
         policy=policy.default
@@ -62,16 +63,24 @@ def deliver(raw, profile):
 
     server = _connect(profile)
 
+    recipient = account["pop3"]["username"]
+
+    sender = (
+        parseaddr(msg.get("Return-Path", ""))[1]
+        or parseaddr(msg.get("Sender", ""))[1]
+        or parseaddr(msg.get("From", ""))[1]
+        or ""
+    )
+
     response = server.sendmail(
-        msg.get("Return-Path", ""),
-        msg.get_all("To", []),
+        sender,
+        [recipient],
         raw
     )
 
     server.quit()
 
     return len(response) == 0
-
 
 # =========================================================
 # TEST CONNECTION

@@ -163,6 +163,13 @@ def cleanup_retention(account, retention_days, delete_callback, uid_map):
 
     cutoff = datetime.utcnow() - timedelta(days=retention_days)
 
+#    log_event(
+#        account,
+#        "INFO",
+#        "RETENTION",
+#        f"cleanup started cutoff={cutoff.isoformat()}"
+#    )
+
     with get_connection() as conn:
 
         cur = conn.execute("""
@@ -173,29 +180,82 @@ def cleanup_retention(account, retention_days, delete_callback, uid_map):
 
         rows = cur.fetchall()
 
+#       log_event(
+#            account,
+#            "INFO",
+#            "RETENTION",
+#            f"{len(rows)} entries found"
+#        )
+
         for r in rows:
+
+            uid = r["uid"]
 
             try:
                 delivered_time = datetime.fromisoformat(r["delivered_at"])
-            except Exception:
+            except Exception as e:
+
+                log_event(
+                    account,
+                    "WARNING",
+                    "RETENTION",
+                    f"invalid date for uid={uid}: {e}"
+                )
                 continue
 
-            if delivered_time < cutoff:
+            if delivered_time >= cutoff:
+                continue
 
-                uid = r["uid"]
-                msg_number = uid_map.get(uid)
+#            log_event(
+#                account,
+#                "INFO",
+#                "RETENTION",
+#                f"expired uid={uid}"
+#            )
 
-                if msg_number:
+            msg_number = uid_map.get(uid)
 
-                    try:
-                        delete_callback(msg_number)
+            if not msg_number:
 
-                        conn.execute("""
-                            DELETE FROM delivered
-                            WHERE account=? AND uid=?
-                        """, (account, uid))
+                log_event(
+                    account,
+                    "WARNING",
+                    "RETENTION",
+                    f"uid not found on server: {uid}"
+                )
 
-                        conn.commit()
+                continue
 
-                    except Exception:
-                        pass
+            try:
+
+                log_event(
+                    account,
+                    "INFO",
+                    "RETENTION",
+                    f"DELE message #{msg_number}"
+                )
+
+                delete_callback(msg_number)
+
+                conn.execute("""
+                    DELETE FROM delivered
+                    WHERE account=? AND uid=?
+                """, (account, uid))
+
+                conn.commit()
+
+#                log_event(
+#                    account,
+#                    "INFO",
+#                    "RETENTION",
+#                    f"deleted uid={uid}"
+#                )
+
+            except Exception as e:
+
+                log_event(
+                    account,
+                    "ERROR",
+                    "RETENTION",
+                    str(e)
+                )

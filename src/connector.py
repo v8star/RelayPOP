@@ -76,7 +76,8 @@ def poll_account(account):
 
             ok = smtp.deliver(
                 raw,
-                smtp_cfg
+                smtp_cfg,
+                account
             )
 
             if not ok:
@@ -143,6 +144,33 @@ def poll_account(account):
                             "RETENTION",
                             str(e)
                         )
+
+        # ==========================================
+        # RETENTION 
+        # ==========================================
+        if retention > 0:
+
+            try:
+
+                database.cleanup_retention(
+                    account=name,
+                    retention_days=retention,
+                    delete_callback=lambda msg_number:
+                        pop3.delete_message(
+                            mailbox,
+                            msg_number
+                        ),
+                    uid_map=uid_map
+                )
+
+            except Exception as e:
+
+                database.log_event(
+                    name,
+                    "WARNING",
+                    "RETENTION",
+                    str(e)
+                )
 
         try:
             mailbox.quit()
