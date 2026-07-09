@@ -12,7 +12,8 @@ It provides a simple web interface to manage POP3 accounts, SMTP profiles, sched
 * Multiple SMTP profiles
 * Scheduled polling
 * Manual polling
-* Delivery logging
+* Delivery/Deletion logging
+* Per-Account status LED
 * Web-based administration
 * Lightweight SQLite backend
 * Docker deployment
