@@ -69,7 +69,7 @@ http://your-server:8080
 
 Configure your POP3 accounts and SMTP profiles from the web interface.
 
-The default credentials for the first login are: admin / popre1ay
+The default password for the first login is: popre1ay
 
 You can change after in the settings menù.
 
